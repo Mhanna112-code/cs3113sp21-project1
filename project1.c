@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
         processArr[k].flag2 = 0;
         processArr[k].flag3 = 0;
         processArr[k].lastIdx = 0;
-    
+
     }
     int flag = 0;
     int nonVol = 0;
@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
     for (int b = 0; b < nInstructions; b++) {
             if (processArr[processArr[b].lastIdx].flag3 != 1) {
                 for (int c = 0; c <= processArr[b].lastIdx; c++)
-                  avgTurnAroundTimeNum += processArr[c].runTime;
+                    avgTurnAroundTimeNum += processArr[c].runTime;
                 processArr[processArr[b].lastIdx].flag3 = 1;
             }
     }
@@ -99,3 +99,4 @@ int main(int argc, char **argv) {
     printf("%.2f\n", avgResTime);
     return 0;
 }
+                               
