@@ -4,10 +4,10 @@ struct Process{
     int ID;
     int runTime;
     int priority;
-    int lastIdxFlag = 0;
-    int flag2 = 0;
-    int flag3 = 0;
-    int lastIdx = 0;
+    int lastIdxFlag;
+    int flag2;
+    int flag3;
+    int lastIdx;
 }processArr[40000];
 
 int findIndex(Process arr[], int idx, int K)
