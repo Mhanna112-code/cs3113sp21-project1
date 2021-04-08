@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
                 contextSwitches++;
         }
         else if (i > 0 && i < nInstructions - 1)
-            if ((processArr[i].ID != processArr[i + 1].ID) && (processArr[i].ID != processArr[i + 1].ID))
+            if ((processArr[i].ID != processArr[i + 1].ID) && (processArr[i].ID != processArr[i - 1].ID))
                 contextSwitches++;
         else
             if (processArr[i].ID != processArr[i - 1].ID)
