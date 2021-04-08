@@ -56,6 +56,7 @@ int main(int argc, char **argv) {
     fscanf(f, "%d", &nProcesses);
     fscanf(f, "%d", &nExecutionElements);
     fscanf(f, "%d", &nInstructions);
+    int numNonVol = 0;
     float throughPut;
     float waitingTime;
     float avgResTime = 0;
@@ -63,19 +64,22 @@ int main(int argc, char **argv) {
         fscanf(f, "%d", &processArr[i].ID);
         fscanf(f, "%d", &processArr[i].runTime);
         fscanf(f, "%d", &processArr[i].priority);
-        if (i == 0) {
-            if (processArr[i].ID != processArr[i + 1].ID)
-                contextSwitches++;
-        }
-        else if (i > 0 && i < nInstructions - 1)
-            if ((processArr[i].ID != processArr[i + 1].ID) && (processArr[i].ID != processArr[i - 1].ID))
-                contextSwitches++;
-        else
-            if (processArr[i].ID != processArr[i - 1].ID)
-                contextSwitches++;
     }
-    float numVol = countNumDistinctElements(processArr,nInstructions);
-    int numNonVol = contextSwitches - numVol;
+    for (int i = 0; i < nInstructions; i++) {
+        if (i == 0)
+            contextSwitches++;
+        if (processArr[i].ID != processArr[i + 1].ID)
+            contextSwitches++;
+        for (int j = i + 1; j < nInstructions; j++) {
+            if (processArr[j].ID == processArr[i].ID)
+                processArr[i].volSwitch++;
+        }
+    }
+    for (int p = 0; p < nInstructions; p++){
+        if (processArr[p].volSwitch > 0)
+            numNonVol++;
+    }
+    int numVol = contextSwitches - numNonVol;
     float cpuUtil = 100.00;
     float avgTurnAroundTime;
     int totalBurstTime = 0;
