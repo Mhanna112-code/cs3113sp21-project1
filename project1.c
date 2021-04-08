@@ -9,7 +9,7 @@ struct Process{
     int flag3;
 }processArr[40000];
 
-int findIndex(struct Process arr[], int idx, int K)
+int findIndex(Process arr[], int idx, int K)
 {
     if (idx < 0)
         return -1;
@@ -22,28 +22,27 @@ int findIndex(struct Process arr[], int idx, int K)
     return findIndex(arr, idx - 1, K);
 }
 
-int countNumDistinctElements(struct Process arr[], int n)
+int countNumDistinctElements(struct Process arr[], int len)
 {
-    int numVol = 1;
+    if (len <= 0) return 0;
+    int unique = 1;
 
-    // Pick all elements one by one
-    for (int i = 1; i < n; i++) {
-        int j = 0;
-        for (j = 0; j < i; j++)
-            if (arr[i].ID == arr[j].ID)
-                break;
-
-        // If not printed earlier, then print it
-        if (i == j)
-            numVol++;
+    for (int outer = 1; outer < len; ++outer)
+    {
+        int is_unique = 1;
+        for (int inner = 0; is_unique && inner < outer; ++inner)
+        {
+            if (arr[inner].ID == arr[outer].ID) is_unique = 0;
+        }
+        if (is_unique) ++unique;
     }
-    return numVol;
+    return unique;
 }
 
 int nProcesses, nExecutionElements, nInstructions;
 
 int main(int argc, char **argv) {
-    FILE *f = fopen(argv[1], "r");
+    FILE *f = fopen("C:\\Users\\march\\CLionProjects\\cs3113-project1\\sample", "r"); // "r" for read
     int arrLength = sizeof(processArr) / sizeof(processArr[0]);
     for (int i = 0; i < arrLength; i++) {
         processArr[i].lastIdxFlag = 0;
@@ -102,9 +101,9 @@ int main(int argc, char **argv) {
                 processArr[lastIdx].lastIdxFlag = 1;
         }
     }
-    avgTurnAroundTime /= numVol;
-    waitingTime /= numVol;
-    throughPut = numVol / totalRunTime;
+    avgTurnAroundTime /= countNumDistinctElements(processArr, nInstructions);
+    waitingTime /= countNumDistinctElements(processArr, nInstructions);
+    throughPut = countNumDistinctElements(processArr, nInstructions) / totalRunTime;
     printf("%d\n", numVol);
     printf("%d\n", numNonVol);
     printf("%.2f\n", cpuUtil);
