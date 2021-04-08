@@ -5,9 +5,8 @@ struct Process{
     int runTime;
     int priority;
     int lastIdxFlag;
-    int flag2;
+    int volSwitch;
     int flag3;
-    int lastIdx;
 }processArr[40000];
 
 int findIndex(struct Process arr[], int idx, int K)
@@ -48,9 +47,8 @@ int main(int argc, char **argv) {
     int arrLength = sizeof(processArr) / sizeof(processArr[0]);
     for (int i = 0; i < arrLength; i++) {
         processArr[i].lastIdxFlag = 0;
-        processArr[i].flag2 = 0;
+        processArr[i].volSwitch = 0;
         processArr[i].flag3 = 0;
-        processArr[i].lastIdx = 0;
     }
     int contextSwitches = 0;
     fscanf(f, "%d", &nProcesses);
