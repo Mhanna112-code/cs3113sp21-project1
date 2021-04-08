@@ -42,7 +42,7 @@ int countNumDistinctElements(struct Process arr[], int len)
 int nProcesses, nExecutionElements, nInstructions;
 
 int main(int argc, char **argv) {
-    FILE *f = fopen("C:\\Users\\march\\CLionProjects\\cs3113-project1\\sample", "r"); // "r" for read
+    FILE *f = fopen(argv[1], "r");    
     int arrLength = sizeof(processArr) / sizeof(processArr[0]);
     int contextSwitches = 0;
     fscanf(f, "%d", &nProcesses);
