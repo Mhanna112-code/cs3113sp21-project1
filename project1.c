@@ -44,15 +44,15 @@ int nProcesses, nExecutionElements, nInstructions;
 int main(int argc, char **argv) {
     FILE *f = fopen("C:\\Users\\march\\CLionProjects\\cs3113-project1\\sample", "r"); // "r" for read
     int arrLength = sizeof(processArr) / sizeof(processArr[0]);
-    for (int i = 0; i < arrLength; i++) {
-        processArr[i].lastIdxFlag = 0;
-        processArr[i].volSwitch = 0;
-        processArr[i].flag3 = 0;
-    }
     int contextSwitches = 0;
     fscanf(f, "%d", &nProcesses);
     fscanf(f, "%d", &nExecutionElements);
     fscanf(f, "%d", &nInstructions);
+    for (int i = 0; i < nInstructions; i++) {
+        processArr[i].lastIdxFlag = 0;
+        processArr[i].volSwitch = 0;
+        processArr[i].flag3 = 0;
+    }
     int numNonVol = 0;
     float throughPut;
     float waitingTime;
@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
     int currTurnAroundTime = 0;
     for (int k = 0; k < nInstructions; k++) {
         totalRunTime += processArr[k].runTime;
-        lastIdx = findIndex(processArr, arrLength - 1, processArr[k].ID);
+        lastIdx = findIndex(processArr, nInstructions - 1, processArr[k].ID);
         if (processArr[k].lastIdxFlag != 1){
             for (int j = 0; j <= lastIdx; j++) {
                 currTurnAroundTime += processArr[j].runTime;
@@ -94,6 +94,7 @@ int main(int argc, char **argv) {
             for (int u = 0; u <= lastIdx; u++) {
                 if (processArr[u].ID == processArr[lastIdx].ID)
                     totalBurstTime += processArr[u].runTime;
+                    processArr[u].lastIdxFlag = 1;
             }
                 waitingTime += currTurnAroundTime - totalBurstTime;
                 totalBurstTime = 0;
