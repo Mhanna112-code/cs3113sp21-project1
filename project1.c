@@ -9,7 +9,7 @@ struct Process{
     int flag2 = 0;
     int flag3 = 0;
     int lastIdx = 0;
-}processArr[100];
+}processArr[40000];
 
 int findIndex(Process arr[], int idx, int K)
 {
@@ -45,7 +45,7 @@ int countNumDistinctElements(struct Process arr[], int n)
 int nProcesses, nExecutionElements, nInstructions;
 
 int main(int argc, char **argv) {
-    FILE *f = fopen("C:\\Users\\march\\CLionProjects\\cs3113-project1\\sample", "r"); // "r" for read
+    FILE *f = fopen(argv[1], "r");
     int arrLength = sizeof(processArr) / sizeof(processArr[0]);
     for (int i = 0; i < arrLength; i++) {
         processArr[i].lastIdxFlag = 0;
