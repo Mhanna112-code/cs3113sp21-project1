@@ -10,7 +10,7 @@ struct Process{
     int lastIdx;
 }processArr[40000];
 
-int findIndex(Process arr[], int idx, int K)
+int findIndex(struct Process arr[], int idx, int K)
 {
     if (idx < 0)
         return -1;
