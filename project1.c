@@ -64,24 +64,25 @@ int main(int argc, char **argv) {
         if (processArr[i].ID != processArr[i + 1].ID)
             contextSwitches++;
     }
-    int numVol = countNumDistinctElements(processArr, nInstructions);
+    float numVol = countNumDistinctElements(processArr, nInstructions);
     int numNonVol = contextSwitches - numVol;
     float cpuUtil = 100.00;
-    float avgTurnAroundTime;
-    int totalBurstTime = 0;
+    float avgTurnAroundTime = 0;
     float totalRunTime = 0;
+    float currTurnAroundTime = 0;
+    float totalBurstTime = 0;
     int lastIdx;
-    int currTurnAroundTime = 0;
     for (int k = 0; k < nInstructions; k++) {
         if (processArr[k].firstIdxFlag != 1) {
             for (int j = 0; j <= k; j++) {
                 currTurnAroundTime += processArr[j].runTime;
             }
-            for (int u = k+1; u < nInstructions; u++) {
-                if (processArr[u].ID == processArr[k].ID)
+            for (int u = 0; u < nInstructions; u++) {
+                if (processArr[u].ID == processArr[k].ID) {
                     processArr[u].firstIdxFlag = 1;
+                    totalBurstTime += processArr[u].runTime;
+                }
             }
-            totalBurstTime += processArr[k].runTime;
             avgResTime += currTurnAroundTime - totalBurstTime;
             totalBurstTime = 0;
             currTurnAroundTime = 0;
@@ -102,9 +103,9 @@ int main(int argc, char **argv) {
                     processArr[u].lastIdxFlag = 1;
                 }
             }
-                waitingTime += currTurnAroundTime - totalBurstTime;
-                totalBurstTime = 0;
-                currTurnAroundTime = 0;
+            waitingTime += currTurnAroundTime - totalBurstTime;
+            totalBurstTime = 0;
+            currTurnAroundTime = 0;
         }
     }
 
