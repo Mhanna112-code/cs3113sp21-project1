@@ -71,22 +71,24 @@ int main(int argc, char **argv) {
     int totalBurstTime = 0;
     float totalRunTime = 0;
     int lastIdx;
-    int currTurnAroundTime = 0;
+    float currTurnAroundTime = 0;
     for (int k = 0; k < nInstructions; k++) {
         if (processArr[k].firstIdxFlag != 1) {
             for (int j = 0; j <= k; j++) {
                 currTurnAroundTime += processArr[j].runTime;
+                if (processArr[j].ID == processArr[k].ID)
+                    totalBurstTime += processArr[j].runTime;
             }
-            for (int u = 0; u < nInstructions; u++) {
-                if (processArr[u].ID == processArr[k].ID) {
+            for (int u = k; u < nInstructions; u++) {
+                if (processArr[u].ID == processArr[k].ID)
                     processArr[u].firstIdxFlag = 1;
-                    totalBurstTime += processArr[u].runTime;
-                }
             }
+
             avgResTime += currTurnAroundTime - totalBurstTime;
             totalBurstTime = 0;
             currTurnAroundTime = 0;
         }
+        continue;
     }
 
     for (int k = 0; k < nInstructions; k++) {
@@ -107,6 +109,7 @@ int main(int argc, char **argv) {
             totalBurstTime = 0;
             currTurnAroundTime = 0;
         }
+        continue;
     }
 
     avgTurnAroundTime /= countNumDistinctElements(processArr, nInstructions);
