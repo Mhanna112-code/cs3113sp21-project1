@@ -112,7 +112,6 @@ int main(int argc, char **argv) {
         continue;
     }
 
-    float prevRunTime;
     //calculates numerator of average waiting time
     for (int k = 0; k < nInstructions; k++) {
         //calculates total run time for all processes
@@ -124,9 +123,7 @@ int main(int argc, char **argv) {
             for (int j = 0; j <= lastIdx; j++) {
                 //calculates numerator of current and average turnaround time
                 currTurnAroundTime += processArr[j].runTime;
-            }
-            for (int j = 0; j < lastIdx; j++) {
-                prevRunTime += processArr[j].runTime;
+                avgTurnAroundTime += processArr[j].runTime;
             }
             //calculates total burst time for each process
             for (int u = 0; u <= lastIdx; u++) {
@@ -137,7 +134,7 @@ int main(int argc, char **argv) {
                 }
             }
             //adds the difference of Turnaround time and total burst time for each process
-            avgTurnAroundTime += currTurnAroundTime - totalBurstTime;
+            waitingTime += currTurnAroundTime - totalBurstTime;
             totalBurstTime = 0;
             currTurnAroundTime = 0;
         }
@@ -147,7 +144,7 @@ int main(int argc, char **argv) {
     //divides numerator of turnaround time by number of unique processes to determine the average turnaround time
     avgTurnAroundTime /= countNumDistinctElements(processArr, nInstructions);
     //divides numerator of waiting time by number of unique processes to determine the average turnaround time
-    waitingTime = prevRunTime / countNumDistinctElements(processArr, nInstructions);
+    waitingTime /= countNumDistinctElements(processArr, nInstructions);
     //divides numerator of response time by number of unique processes to determine the average turnaround time
     avgResTime /= countNumDistinctElements(processArr, nInstructions);
     //divides number of unique processes by total run time to calculate throughput
