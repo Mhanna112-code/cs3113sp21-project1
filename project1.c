@@ -6,7 +6,7 @@ struct Process{
     int priority;
     int lastIdxFlag;
     int volSwitch;
-    int flag3;
+    int firstIdxFlag;
 }processArr[40000];
 
 int findIndex(struct Process arr[], int idx, int K)
@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < nInstructions; i++) {
         processArr[i].lastIdxFlag = 0;
         processArr[i].volSwitch = 0;
-        processArr[i].flag3 = 0;
+        processArr[i].firstIdxFlag = 0;
     }
     int numNonVol = 0;
     float throughPut;
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
             contextSwitches++;
         if (processArr[i].ID != processArr[i + 1].ID)
             contextSwitches++;
-        for (int j = i + 1; j < nInstructions; j++) {
+        for (int j = i + 2; j < nInstructions; j++) {
             if (processArr[j].ID == processArr[i].ID)
                 processArr[i].volSwitch++;
         }
@@ -84,6 +84,22 @@ int main(int argc, char **argv) {
     int lastIdx;
     int currTurnAroundTime = 0;
     for (int k = 0; k < nInstructions; k++) {
+        if (processArr[k].firstIdxFlag != 1) {
+            for (int j = 0; j <= k; j++) {
+                currTurnAroundTime += processArr[j].runTime;
+            }
+            for (int u = k+1; u < nInstructions; u++) {
+                if (processArr[u].ID == processArr[k].ID)
+                    processArr[u].firstIdxFlag = 1;
+            }
+            totalBurstTime += processArr[k].runTime;
+            avgResTime += currTurnAroundTime - totalBurstTime;
+            totalBurstTime = 0;
+            currTurnAroundTime = 0;
+        }
+    }
+
+    for (int k = 0; k < nInstructions; k++) {
         totalRunTime += processArr[k].runTime;
         lastIdx = findIndex(processArr, nInstructions - 1, processArr[k].ID);
         if (processArr[k].lastIdxFlag != 1){
@@ -92,18 +108,20 @@ int main(int argc, char **argv) {
                 avgTurnAroundTime += processArr[j].runTime;
             }
             for (int u = 0; u <= lastIdx; u++) {
-                if (processArr[u].ID == processArr[lastIdx].ID)
+                if (processArr[u].ID == processArr[lastIdx].ID) {
                     totalBurstTime += processArr[u].runTime;
                     processArr[u].lastIdxFlag = 1;
+                }
             }
                 waitingTime += currTurnAroundTime - totalBurstTime;
                 totalBurstTime = 0;
                 currTurnAroundTime = 0;
-                processArr[lastIdx].lastIdxFlag = 1;
         }
     }
+
     avgTurnAroundTime /= countNumDistinctElements(processArr, nInstructions);
     waitingTime /= countNumDistinctElements(processArr, nInstructions);
+    avgResTime /= countNumDistinctElements(processArr, nInstructions);
     throughPut = countNumDistinctElements(processArr, nInstructions) / totalRunTime;
     printf("%d\n", numVol);
     printf("%d\n", numNonVol);
