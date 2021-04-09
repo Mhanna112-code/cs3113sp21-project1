@@ -7,7 +7,7 @@ struct Process{
     int lastIdxFlag;
     int volSwitch;
     int firstIdxFlag;
-}processArr[32768];
+}processArr[40000];
 
 int findIndex(struct Process arr[], int idx, int K)
 {
@@ -63,8 +63,6 @@ int main(int argc, char **argv) {
         fscanf(f, "%d", &processArr[i].priority);
     }
     for (int i = 0; i < nInstructions; i++) {
-        if (i == 0)
-            contextSwitches++;
         if (processArr[i].ID != processArr[i + 1].ID)
             contextSwitches++;
         for (int j = i + 2; j < nInstructions; j++) {
