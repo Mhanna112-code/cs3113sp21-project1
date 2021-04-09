@@ -7,7 +7,7 @@ struct Process{
     int lastIdxFlag;
     int volSwitch;
     int firstIdxFlag;
-}processArr[40000];
+}processArr[32768];
 
 int findIndex(struct Process arr[], int idx, int K)
 {
