@@ -43,7 +43,6 @@ int nProcesses, nExecutionElements, nInstructions;
 
 int main(int argc, char **argv) {
     FILE *f = fopen(argv[1], "r");    
-    int arrLength = sizeof(processArr) / sizeof(processArr[0]);
     int contextSwitches = 0;
     fscanf(f, "%d", &nProcesses);
     fscanf(f, "%d", &nExecutionElements);
@@ -53,7 +52,6 @@ int main(int argc, char **argv) {
         processArr[i].volSwitch = 0;
         processArr[i].firstIdxFlag = 0;
     }
-    int numNonVol = 0;
     float throughPut;
     float waitingTime;
     float avgResTime = 0;
@@ -65,16 +63,9 @@ int main(int argc, char **argv) {
     for (int i = 0; i < nInstructions; i++) {
         if (processArr[i].ID != processArr[i + 1].ID)
             contextSwitches++;
-        for (int j = i + 2; j < nInstructions; j++) {
-            if (processArr[j].ID == processArr[i].ID)
-                processArr[i].volSwitch++;
-        }
     }
-    for (int p = 0; p < nInstructions; p++){
-        if (processArr[p].volSwitch > 0)
-            numNonVol++;
-    }
-    int numVol = contextSwitches - numNonVol;
+    int numVol = countNumDistinctElements(processArr, nInstructions);
+    int numNonVol = contextSwitches - numVol;
     float cpuUtil = 100.00;
     float avgTurnAroundTime;
     int totalBurstTime = 0;
