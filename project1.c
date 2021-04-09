@@ -42,7 +42,7 @@ int countNumDistinctElements(struct Process arr[], int len)
 int nProcesses, nExecutionElements, nInstructions;
 
 int main(int argc, char **argv) {
-    FILE *f = fopen(argv[1], "r");    
+    FILE *f = fopen(argv[1], "r");
     int contextSwitches = 0;
     fscanf(f, "%d", &nProcesses);
     fscanf(f, "%d", &nExecutionElements);
@@ -64,14 +64,14 @@ int main(int argc, char **argv) {
         if (processArr[i].ID != processArr[i + 1].ID)
             contextSwitches++;
     }
-    float numVol = countNumDistinctElements(processArr, nInstructions);
+    int numVol = countNumDistinctElements(processArr, nInstructions);
     int numNonVol = contextSwitches - numVol;
     float cpuUtil = 100.00;
-    float avgTurnAroundTime = 0;
+    float avgTurnAroundTime;
+    int totalBurstTime = 0;
     float totalRunTime = 0;
-    float currTurnAroundTime = 0;
-    float totalBurstTime = 0;
     int lastIdx;
+    int currTurnAroundTime = 0;
     for (int k = 0; k < nInstructions; k++) {
         if (processArr[k].firstIdxFlag != 1) {
             for (int j = 0; j <= k; j++) {
